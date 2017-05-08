@@ -1,9 +1,14 @@
 ## Creating an openshift project
 
+Two templates are provided: 
+
+ * openshift/templates/parse_image_data_with_celery.yml
+ * openshift/templates/parse_image_data_no_celery.yml
+
 ```
 # first source a file such as example_env.sh
 oc new-project parse-image-data
-oc secrets new-sshauth sshsecret --ssh-privatekey=$HOME/.ssh/id_rsa_git
+oc secrets new-sshauth sshsecret --ssh-privatekey=$HOME/.ssh/<your private key>
 oc secret add serviceaccount/builder secrets/sshsecret
 oc new-app \
     --param=SOURCE_REPOSITORY_URL=${SOURCE_REPOSITORY_URL} \
@@ -16,7 +21,7 @@ oc new-app \
     --param=API_TOKEN_PRD=${API_TOKEN_PRD} \
     --param=OPENSHIFT_MASTER_NP=${OPENSHIFT_MASTER_NP} \
     --param=OPENSHIFT_MASTER_PRD=${OPENSHIFT_MASTER_PRD} \
-    -f openshift/templates/parse_image_data_no_celery.yml
+    -f openshift/templates/parse_image_data_with_celery.yml
 
 # Later
 oc get pods
